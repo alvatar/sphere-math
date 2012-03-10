@@ -17,14 +17,15 @@
               (+ (vect2-y v1)
                  (vect2-y v2))))
 
-(define-syntax vect2+
-  (syntax-rules ()
-    ((_ v)
-     v)
-    ((_ v1 v2)
-     (vect2:+vect2 v1 v2))
-    ((_ v1 v2 v3 ...)
-     (vect2+ (vect2:+vect2 v1 v2) v3 ...))))
+(define vect2+ vect2:+vect2)
+;; (define-syntax vect2+
+;;   (syntax-rules ()
+;;     ((_ v)
+;;      v)
+;;     ((_ v1 v2)
+;;      (vect2:+vect2 v1 v2))
+;;     ((_ v1 v2 v3 ...)
+;;      (vect2+ (vect2:+vect2 v1 v2) v3 ...))))
 
 ;;; Vector substraction
 
@@ -34,14 +35,7 @@
               (- (vect2-y v1)
                  (vect2-y v2))))
 
-(define-syntax vect2-
-  (syntax-rules ()
-    ((_ v)
-     v)
-    ((_ v1 v2)
-     (vect2:-vect2 v1 v2))
-    ((_ v1 v2 v3 ...)
-     (vect2- (vect2:-vect2 v1 v2) v3 ...))))
+(define vect2- vect2:-vect2)
 
 ;;; Vector dot product
 
@@ -51,14 +45,7 @@
               (* (vect2-y v1)
                  (vect2-y v2))))
 
-(define-syntax vect2*
-  (syntax-rules ()
-    ((_ v)
-     v)
-    ((_ v1 v2)
-     (vect2:*vect2 v1 v2))
-    ((_ v1 v2 v3 ...)
-     (vect2* (vect2:*vect2 v1 v2) v3 ...))))
+(define vect2* vect2:*vect2)
 
 ;;; Vector cross product
 
