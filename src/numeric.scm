@@ -126,5 +126,5 @@
 
 ;;; Inverse fast Fourier transform
 
-(define (fft ?)
+(define (ifft ?)
   (error "Not implemented"))

@@ -28,7 +28,8 @@
 
 ;;; Inverse function
 
-(define inverse (curry / 1))
+;(define inverse (curry / 1))
+(define (inverse x) (/ 1 x))
 
 ;;; Double
 
@@ -40,7 +41,7 @@
 
 ;;; One?
 
-(define one? (curry = 1))
+;(define one? (curry = 1))
 
 ;;; Exact random
 

@@ -45,6 +45,7 @@
 ;;;
 
 (define (interpolate/hermite l)
+  (error "Not implemented"))
 
 ;;; Notes:
 ;;;
