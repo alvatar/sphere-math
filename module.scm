@@ -8,4 +8,4 @@
 ;(include "src/sequences.scm")
 ;(include "src/special.scm")
 ;(include "src/statistics.scm")
-;(include "src/vect2.scm")
+(include "src/vect2.scm")
