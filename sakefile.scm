@@ -1,35 +1,29 @@
-(define lib-directory "lib/")
-(define lib-name "math")
-(define lib-suffix ".o1")
-(define c-suffix ".c")
+(include "~~spheres/prelude#.scm")
+(%include sake: utils#)
 
-(define-task init ()
-  (make-directory (current-build-directory)))
+(define modules '(basic))
 
-(define-task clean (init)
-  (delete-file (current-build-directory))
-  (delete-file lib-directory))
+(define-task clean ()
+  (sake:default-clean))
 
-(define-task compile (init)
-  (gambit-compile-file
-   "module.scm"
-   output: (string-append (current-build-directory) lib-name lib-suffix)))
+(define-task compile ()
+  (for-each (lambda (m)
+              (sake:compile-c-file (sake:generate-c-file m))
+              (sake:compile-c-file (sake:generate-c-file
+                                    m
+                                    version: '(debug)
+                                    compiler-options: '(debug))))
+            modules))
 
-(define-task compile-to-c (init)
-  (gambit-eval-here
-   `(begin
-      (compile-file-to-target
-       "module.scm"
-       output: ,(string-append (current-build-directory) lib-name c-suffix)))))
+(define-task install ()
+  (for-each (lambda (m)
+              (sake:install-compiled-module m)
+              (sake:install-compiled-module m version: '(debug)))
+            modules)
+  (sake:install-system-sphere))
 
-(define-task install (compile compile-to-c)
-  (make-directory lib-directory)
-  (delete-file (string-append lib-directory lib-name lib-suffix))
-  (delete-file (string-append lib-directory lib-name c-suffix))
-  (copy-file (string-append (current-build-directory) lib-name lib-suffix)
-             (string-append lib-directory lib-name lib-suffix))
-  (copy-file (string-append (current-build-directory) lib-name c-suffix)
-             (string-append lib-directory lib-name c-suffix)))
+(define-task uninstall ()
+  (sake:uninstall-system-sphere))
 
 (define-task all (compile install)
-  '(compile and install))
+  'all)
