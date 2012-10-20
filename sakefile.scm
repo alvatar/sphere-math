@@ -8,8 +8,8 @@
 
 (define-task compile ()
   (for-each (lambda (m)
-              (sake:compile-c-file (sake:generate-c-file m))
-              (sake:compile-c-file (sake:generate-c-file
+              (sake:compile-c-to-o (sake:compile-to-c m))
+              (sake:compile-c-to-o (sake:compile-to-c
                                     m
                                     version: '(debug)
                                     compiler-options: '(debug))))
