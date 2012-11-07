@@ -52,8 +52,20 @@
 
 ;;;
 
-(define (harmonic-mean l)
-  (error "Not implemented"))
+(define (harmonic-mean list)
+  (/ (let loop ((counter 0) (l list))
+			(cond
+				((null? l) counter)
+				(else
+					(loop (+ counter 1) (cdr l)))))
+		(let loop ((l list))
+			(cond
+				((null? l) 0)
+				(else
+					(+ (/ 1 (car l))
+						(loop (cdr l))))))))
+
+(print(harmonic-mean '(1 2 4)))
 
 ;;;
 
