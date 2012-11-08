@@ -34,6 +34,12 @@
   (case-lambda
    ((l) (/ (sum l) (length l))) ; OPTIMIZE
    ((a b) (/ (+ a b) 2))))
+;;arithmetic-mean listed below for review
+;;(define (arithmetic-mean list)
+;;	(/ (apply + list) (length list)))
+
+
+(print (arithmetic-mean '(1 2 3 4)))
 
 ;;; 
 
@@ -110,8 +116,12 @@
 
 ;;;
 
-(define (mid-range l)
-  (error "Not implemented"))
+(define (mid-range list)
+  (* (+ (apply max list) (apply min list))
+     0.5))
+
+
+(print (mid-range '(1 2 3 4 5))
 
 ;;;
 
@@ -120,8 +130,13 @@
 
 ;;;
 
-(define (standard-deviation l)
-  (error "Not implemented"))
+(define (standard-deviation list)
+  (sqrt (let  ((mean (arithmetic-mean list))
+	       (n (length list)))
+	  (/ (apply + (map (lambda(x) (* (- x mean) (- x mean))) list))
+				n))))
+
+(print (standard-deviation '(1 2 3 4 5)))
 
 ;;;
 
