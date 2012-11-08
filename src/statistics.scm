@@ -90,8 +90,17 @@
 
 ;;;
 
-(define (quadratic-mean l)
-  (error "Not implemented"))
+(define (quadratic-mean list)
+	(sqrt (* (/ 1 
+				(let loop ((counter 0) (l list))
+					(cond 
+						((null? l) counter)
+						(else
+							(loop (+ counter 1) (cdr l))))))
+			(apply + (map (lambda(x)(* x x)) list)))))
+
+
+(print (quadratic-mean '(1 2 3 4 5)))
 
 ;;;
 
