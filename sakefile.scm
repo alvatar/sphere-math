@@ -1,6 +1,3 @@
-(include "~~spheres/prelude#.scm")
-(%include sake: utils#)
-
 (define modules '(basic))
 
 (define-task clean ()
