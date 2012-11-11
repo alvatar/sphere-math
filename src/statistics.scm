@@ -49,8 +49,9 @@
 ;;;
 
 (define (geometric-mean l)
-  (error "Not implemented"))
+  (expt (apply * l) (/ 1 (length l))))
 
+;;(print (geometric-mean '(1 2 3 4 5)))
 ;;;
 
 (define (running-geometric-mean! l)
