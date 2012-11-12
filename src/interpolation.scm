@@ -20,7 +20,6 @@
 			(else
 				(loop (+ m 1) M (cons m list))))))
 
-;;(print (range-expand '(0 4 8 6 2 5)))
 
 
 ;;; '(0 4 8 6 2 5) -> '(0 1 2 3 4 5 6 7 8 7 6 5 4 3 2 3 4 5)
@@ -29,7 +28,6 @@
 	(let ((list (range-expand l)))
 		(append list (cdr (reverse list)))))
 
-;;(print (full-range-expand '(0 4 8 6 2 5)))
 ;;; '(0 1 2 3 4 5 6 7 8 7 6 5 4 3 2 3 4 5) -> (0 8 2 5)
 
 (define (range-extract l)
