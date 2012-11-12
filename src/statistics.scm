@@ -39,7 +39,6 @@
 ;;	(/ (apply + list) (length list)))
 
 
-(print (arithmetic-mean '(1 2 3 4)))
 
 ;;; 
 
@@ -73,7 +72,6 @@
 	  (+ (/ 1 (car l))
 	     (loop (cdr l))))))))
 
-(print(harmonic-mean '(1 2 4)))
 
 ;;;
 
@@ -108,8 +106,6 @@
 	   (apply + (map (lambda(x)(* x x)) list)))))
 
 
-(print (quadratic-mean '(1 2 3 4 5)))
-
 ;;;
 
 (define (running-quadratic-mean! l)
@@ -121,8 +117,6 @@
   (* (+ (apply max list) (apply min list))
      0.5))
 
-
-(print (mid-range '(1 2 3 4 5))
 
 ;;;
 
@@ -137,7 +131,6 @@
 	  (/ (apply + (map (lambda(x) (* (- x mean) (- x mean))) list))
 				n))))
 
-(print (standard-deviation '(1 2 3 4 5)))
 
 ;;;
 
