@@ -34,6 +34,11 @@
   (case-lambda
    ((l) (/ (sum l) (length l))) ; OPTIMIZE
    ((a b) (/ (+ a b) 2))))
+;;arithmetic-mean listed below for review
+;;(define (arithmetic-mean list)
+;;	(/ (apply + list) (length list)))
+
+
 
 ;;; 
 
@@ -43,8 +48,9 @@
 ;;;
 
 (define (geometric-mean l)
-  (error "Not implemented"))
+  (expt (apply * l) (/ 1 (length l))))
 
+;;(print (geometric-mean '(1 2 3 4 5)))
 ;;;
 
 (define (running-geometric-mean! l)
@@ -52,8 +58,20 @@
 
 ;;;
 
-(define (harmonic-mean l)
-  (error "Not implemented"))
+(define (harmonic-mean list)
+  ( / (let loop ((counter 0) (l list))
+	(cond
+	 ((null? l) counter)
+	 (else
+	  (loop (+ counter 1) 
+		(cdr l)))))
+      (let loop ((l list))
+	(cond
+	 ((null? l) 0)
+	 (else
+	  (+ (/ 1 (car l))
+	     (loop (cdr l))))))))
+
 
 ;;;
 
@@ -78,8 +96,15 @@
 
 ;;;
 
-(define (quadratic-mean l)
-  (error "Not implemented"))
+(define (quadratic-mean list)
+  (sqrt (* (/ 1 
+	      (let loop ((counter 0) (l list))
+		(cond 
+		 ((null? l) counter)
+		 (else
+		  (loop (+ counter 1) (cdr l))))))
+	   (apply + (map (lambda(x)(* x x)) list)))))
+
 
 ;;;
 
@@ -88,8 +113,10 @@
 
 ;;;
 
-(define (mid-range l)
-  (error "Not implemented"))
+(define (mid-range list)
+  (* (+ (apply max list) (apply min list))
+     0.5))
+
 
 ;;;
 
@@ -98,8 +125,12 @@
 
 ;;;
 
-(define (standard-deviation l)
-  (error "Not implemented"))
+(define (standard-deviation list)
+  (sqrt (let  ((mean (arithmetic-mean list))
+	       (n (length list)))
+	  (/ (apply + (map (lambda(x) (* (- x mean) (- x mean))) list))
+				n))))
+
 
 ;;;
 
