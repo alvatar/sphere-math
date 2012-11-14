@@ -10,130 +10,118 @@
 ;-------------------------------------------------------------------------------
 
 ;;; Takes the smallest value of a list
-
 (define (pick-min l) (apply min l))
 
 ;;; Takes the biggest value of a list
-
 (define (pick-max l) (apply max l))
 
-;;;
-
+;;; Mode
 (define (mode l)
   (error "Not implemented"))
 
-;;;
-
+;;; Mode with list memory
 (define (running-mode! l)
   (error "Not implemented"))
 
-;;; 1 arg: mean of all values in a list
-;;; 2 args: mean of the two values
-
-(define arithmetic-mean ; TODO: Check if optimizes, build it from specific mean2/mean-list generators, so client can choose
-  (case-lambda
-   ((l) (/ (sum l) (length l))) ; OPTIMIZE
-   ((a b) (/ (+ a b) 2))))
-;;arithmetic-mean listed below for review
-;;(define (arithmetic-mean list)
-;;	(/ (apply + list) (length list)))
-
-
-
-;;; 
-
+;;; Arithmetic mean
+(define (arithmetic-mean l)
+  (let recur ((accum 0)
+              (n 0)
+              (l l))
+    (if (null? l)
+        (/ accum n)
+        (recur (+ accum (car l))
+               (++ n)
+               (cdr l)))))
 (define (running-arithmetic-mean!)
   (error "Not implemented"))
 
-;;;
+;;; Arithmetic mean of two values
+(define (arithmetic-mean/2 a b)
+  (/ (+ a b) 2))
 
+;;; Geometric mean
 (define (geometric-mean l)
   (expt (apply * l) (/ 1 (length l))))
-
-;;(print (geometric-mean '(1 2 3 4 5)))
-;;;
-
 (define (running-geometric-mean! l)
   (error "Not implemented"))
 
-;;;
-
-(define (harmonic-mean list)
-  ( / (let loop ((counter 0) (l list))
-	(cond
-	 ((null? l) counter)
-	 (else
-	  (loop (+ counter 1) 
-		(cdr l)))))
-      (let loop ((l list))
-	(cond
-	 ((null? l) 0)
-	 (else
-	  (+ (/ 1 (car l))
-	     (loop (cdr l))))))))
-
-
-;;;
-
+;;; Harmonic mean
+(define (harmonic-mean l)
+  (let recur ((accum 0)
+              (n 0)
+              (l l))
+    (if (null? l)
+        (/ n accum)
+        (recur (+ (/ 1 (car l)) accum)
+               (++ n)
+               (cdr l)))))
 (define (running-harmonic-mean! l)
   (error "Not implemented"))
 
-;;; Weighed mean of the values of the first list, the second are the weights
+;;; Harmonic mean of two values
+(define (harmonic-mean/2 a b)
+  (/ (* 2 a b)
+     (+ a b)))
 
+;;; Weighed mean of the values of the first list, the second list are the weights
 (define (weighted-mean vl wl)
-  (if (not (= (length vl) (length wl)))
-      (error "Values and weights lists are not of the same length")) ; TODO: Change to arg-checks
-  (let ((q (fold (lambda (v w num.den) (list
-                                   (+ (* v w) (car num.den))
-                                   (+ w (cadr num.den))))
-                 '(0 0) vl wl)))
-    (/ (car q) (cadr q))))
-
-;;;
-
+  (let recur ((vl vl)
+              (wl wl)
+              (num 0)
+              (denom 0))
+    (if (or (null? vl) (null? wl))
+        (/ num denom)
+        (recur (cdr vl)
+               (cdr wl)
+               (+ (* (car vl)
+                     (car wl))
+                  num)
+               (+ (car wl)
+                  denom)))))
 (define (running-weighted-mean! vl wl)
   (error "Not implemented"))
 
-;;;
-
-(define (quadratic-mean list)
-  (sqrt (* (/ 1 
-	      (let loop ((counter 0) (l list))
-		(cond 
-		 ((null? l) counter)
-		 (else
-		  (loop (+ counter 1) (cdr l))))))
-	   (apply + (map (lambda(x)(* x x)) list)))))
-
-
-;;;
-
+;;; Quadratic mean
+(define (quadratic-mean l)
+  (let recur ((accum 0)
+              (n 0)
+              (l l))
+    (if (null? l)
+        (sqrt (/ accum n))
+        (recur (+ ((lambda (x) (* x x)) (car l)) accum)
+               (++ n)
+               (cdr l)))))
 (define (running-quadratic-mean! l)
   (error "Not implemented"))
 
-;;;
-
+;;; Mid range
 (define (mid-range list)
-  (* (+ (apply max list) (apply min list))
-     0.5))
-
-
-;;;
-
+  (/ (+ (apply max list) (apply min list))
+     2))
 (define (running-mid-range! l)
   (error "Not implemented"))
 
-;;;
+;;; Variance
+(define (variance l)
+  (let ((mean (arithmetic-mean l)))
+    (let recur ((accum 0)
+                (n 0)
+                (l l))
+      (if (null? l)
+          (/ accum n)
+          (recur (+ ((lambda (x) (* x x)) (- (car l) mean))
+                    accum)
+                 (++ n)
+                 (cdr l))))))
+(define (running-standard-deviation! l)
+  (error "Not implemented"))
 
-(define (standard-deviation list)
-  (sqrt (let  ((mean (arithmetic-mean list))
-	       (n (length list)))
-	  (/ (apply + (map (lambda(x) (* (- x mean) (- x mean))) list))
-				n))))
+;;; Standard deviation
+(define (standard-deviation l)
+  (sqrt (variance l)))
 
-
-;;;
-
+;;; Standard deviation with list memory
 (define (running-standard-deviation! l)
   (error "Not implemented"))
 
@@ -142,22 +130,18 @@
 ;-------------------------------------------------------------------------------
 
 ;;;
-
 (define (ziggurat f x)
   (error "Not implemented"))
 
 ;;;
-
 (define (ratio-of-uniforms f x)
   (error "Not implemented"))
   
 ;;; Inverted cumulative distribution function
-
 (define (inverted-cdf f x)
   (error "Not implemented"))
 
 ;;; Marsaglia polar method
-
 (define (marsaglia f x)
   (error "Not implemented"))
 

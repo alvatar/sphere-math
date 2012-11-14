@@ -9,27 +9,27 @@
 ;-------------------------------------------------------------------------------
 ; Integer interpolation
 ;-------------------------------------------------------------------------------
-;;; '(0 4 8 6 2 5) -> '(0 1 2 3 4 5 6 7 8)
-
-(define (range-expand l)
-	(let loop ((m (apply min l))
-  			   (M (apply max l))
-  			   (list '()))
-		(cond 
-			((= m M) (reverse (cons m list)))
-			(else
-				(loop (+ m 1) M (cons m list))))))
-
-
 
 ;;; '(0 4 8 6 2 5) -> '(0 1 2 3 4 5 6 7 8 7 6 5 4 3 2 3 4 5)
-
-(define (full-range-expand l)
-	(let ((list (range-expand l)))
-		(append list (cdr (reverse list)))))
+(define (range-expand l)
+  (let recur ((rest l))
+    (if (null? (cdr rest))
+        (list (car rest))
+        (let* ((first (car rest))
+               (second (cadr rest))
+               (generator
+                (if (< first second)
+                    (lambda (x) (+ x 1))
+                    (lambda (x) (- x 1)))))
+          (assure (and (integer? first) (integer? second))
+                  (error "Element in list is not an integer number"))
+          (let generate ((n first))
+            (if (= n second)
+                (recur (cdr rest))
+                (cons n (generate
+                         (generator n)))))))))
 
 ;;; '(0 1 2 3 4 5 6 7 8 7 6 5 4 3 2 3 4 5) -> (0 8 2 5)
-
 (define (range-extract l)
   (error "not implemented"))
 
