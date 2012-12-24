@@ -1,4 +1,6 @@
-(define modules '(basic))
+(define modules
+  '(basic
+    bit-logical))
 
 (define-task clean ()
   (sake:default-clean))
