@@ -18,7 +18,7 @@
 
 ;;; Inverse function
 
-(define (inverse x) (/ 1 x))
+(define inverse ##inverse)
 
 ;;; Square
 (define (square x) (* x x))
