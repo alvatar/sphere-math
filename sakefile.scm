@@ -1,6 +1,7 @@
 (define modules
   '(basic
-    bit-logical))
+    bit-logical
+    matrix))
 
 (define-task clean ()
   (sake:default-clean))
@@ -15,14 +16,11 @@
             modules))
 
 (define-task install ()
-  (for-each (lambda (m)
-              (sake:install-compiled-module m)
-              (sake:install-compiled-module m version: '(debug)))
-            modules)
-  (sake:install-system-sphere))
+  (for-each (lambda (m) (sake:install-compiled-module m versions: '(() (debug)))) modules)
+  (sake:install-sphere-to-system))
 
 (define-task uninstall ()
-  (sake:uninstall-system-sphere))
+  (sake:uninstall-sphere-from-system))
 
 (define-task all (compile install)
   'all)
