@@ -8,11 +8,8 @@
 
 (define-task compile ()
   (for-each (lambda (m)
-              (sake#compile-c-to-o (sake#compile-to-c m))
-              (sake#compile-c-to-o (sake#compile-to-c
-                                    m
-                                    version: '(debug)
-                                    compiler-options: '(debug))))
+              (sake#compile-module m)
+              (sake#compile-module m compiler-options: '(debug)))
             modules))
 
 (define-task install ()
