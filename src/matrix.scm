@@ -1,5 +1,13 @@
-;;; Copyright (c) 2013 by Álvaro Castro Castilla
+;;; Copyright (c) 2013-2014 by Álvaro Castro Castilla
 ;;; Vector-based matrices
+
+(cond-expand
+ (optimize
+  (declare (standard-bindings) (extended-bindings) (not safe) (block)))
+ (debug
+  (declare (safe) (debug) (debug-location) (debug-source) (debug-environments)))
+ (else (void)))
+
 
 ;;! make-matrix creates a matrix (a vector of vectors).
 (define (make-matrix rows columns)

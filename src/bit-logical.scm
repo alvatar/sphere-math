@@ -1,7 +1,14 @@
 ;;!!! SRFI-60 Integers as Bits
 
-;; Functionality is native in Gambit, but function names differ,
-;; we provide the definitions
+(cond-expand
+ (optimize
+  (declare (standard-bindings) (extended-bindings) (not safe) (block)))
+ (debug
+  (declare (safe) (debug) (debug-location) (debug-source) (debug-environments)))
+ (else (void)))
+
+
+;; Most of the API is implemented by Gambit under different names
 
 ;;!! Bitwise operations
 

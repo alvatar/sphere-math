@@ -1,14 +1,16 @@
-;;; Copyright (c) 2012 by Álvaro Castro-Castilla, All Rights Reserved.
-;;; Licensed under the GPLv3 license, see LICENSE file for full description.
+;;; Copyright (c) 2012-2014 by Álvaro Castro-Castilla, All Rights Reserved.
+;;; Basic Math definitions and procedures
 
-(declare (standard-bindings)
-         (extended-bindings)
-         (block)
-         (mostly-generic))
+(cond-expand
+ (optimize
+  (declare (standard-bindings) (extended-bindings) (not safe) (block)))
+ (debug
+  (declare (safe) (debug) (debug-location) (debug-source) (debug-environments)))
+ (else (void)))
 
-;-------------------------------------------------------------------------------
-; Constants
-;-------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;!! Constants
 
 (define pi (angle -inf.0))
 (define pi2 (fl* #i2 pi))
@@ -28,9 +30,9 @@
 
 (define euler #i0.5772156649)
 
-;-------------------------------------------------------------------------------
-; Numeric
-;-------------------------------------------------------------------------------
+
+;;------------------------------------------------------------------------------
+;;!! Numeric
 
 ;;! Generic conversion to integer number
 (define ->integer
@@ -49,9 +51,8 @@
 
 (define ->flonum exact->inexact)
 
-;-------------------------------------------------------------------------------
-; Aritmethics
-;-------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;;!! Aritmethics
 
 ;;! Computes the sum of all values
 (define (sum l) (apply + l))
@@ -103,17 +104,15 @@
 ;;;     return lround(exp(lgamma(n+1)));
 ;;;     }
 
-;-------------------------------------------------------------------------------
-; Polynomials
-;-------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;;!! Polynomials
 
 ;;! Evaluate a polynomial using Horner's rule, given a list of the coefficients
 (define (eval-polynomial/horner coeffs x)
   (error "Not implemented"))
 
-;-------------------------------------------------------------------------------
-; Equations
-;-------------------------------------------------------------------------------
+;;------------------------------------------------------------------------------
+;;!! Equations
 
 ;;! Find roots of a quadratic equation
 (define (solve-quadratic a b c)
