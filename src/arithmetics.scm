@@ -1,5 +1,5 @@
 ;;; Copyright (c) 2012-2014 by Álvaro Castro-Castilla, All Rights Reserved.
-;;; Basic Math definitions and procedures
+;;; Arithmetical definitions and procedures
 
 (cond-expand
  (optimize
@@ -75,17 +75,51 @@
   (inexact->exact (fl+ -1.0 (fl* (random-real) 2.0))))
 
 ;;! Extended-gcd(a,b) = (x,y), such that a*x + b*y = gcd(a,b)
-(define (extended-gcd a b)
-  (if (= (modulo a b) 0)
-      (cons 0 1)
-      (let* ((x:y (extended-gcd b (modulo a b)))
-             (x (car x:y))
-             (y (cdr x:y)))
-        (cons y (- x (* y (quotient a b)))))))
+;; Test alternative:
+;; (define (extended-gcd a b)
+;;   (if (= (modulo a b) 0)
+;;       (cons 0 1)
+;;       (let* ((x:y (extended-gcd b (modulo a b)))
+;;              (x (car x:y))
+;;              (y (cdr x:y)))
+;;         (cons y (- x (* y (quotient a b)))))))
+(define (extended-gcd x y)
+  (let loop ((x x) (y y)
+             (u1 1) (u2 0)
+             (v1 0) (v2 1))
+    (if (zero? y)
+        (list x u1 v1)
+        (let ((q (quotient x y))
+              (r (remainder x y)))
+          (loop y r
+                u2 (- u1 (* q u2))
+                v2 (- v1 (* q v2)))))))
 
 ;;! Modulo-inverse(a,n) = b, such that a*b = 1 [mod n].
-(define (modulo-inverse a n)
-  (modulo (car (extended-gcd a n)) n))
+;; Test alternative:
+;; (define (modulo-inverse a n)
+;;   (modulo (car (extended-gcd a n)) n))
+(define (modulo-inverse x b)
+  (let* ((x1 (modulo x b))
+         (g (extended-gcd x1 b)))
+    (if (not (= (car g) 1))
+        (error "internal error, numbers are not relatively prime" x b)
+        (modulo (cadr g) b))))
+
+;;! Computes x^y mod m
+(define (expt-mod x y m)
+  (define (expt-mod-aux n e m)
+    (cond ((zero? e) 1)
+          ((even? e)
+           (expt-mod-aux
+            (modulo (* n n) m)
+            (quotient e 2)
+            m))
+          (else
+           (modulo
+            (* n (expt-mod-aux n (- e 1) m))
+            m))))
+  (expt-mod-aux x y m))
 
 ;;! Totient(n) = (p - 1)*(q - 1), 
 ;;  where pq is the prime factorization of n.
@@ -104,16 +138,36 @@
 ;;;     return lround(exp(lgamma(n+1)));
 ;;;     }
 
-;;------------------------------------------------------------------------------
-;;!! Polynomials
-
-;;! Evaluate a polynomial using Horner's rule, given a list of the coefficients
-(define (eval-polynomial/horner coeffs x)
-  (error "Not implemented"))
-
-;;------------------------------------------------------------------------------
-;;!! Equations
-
-;;! Find roots of a quadratic equation
-(define (solve-quadratic a b c)
-  (error "Not implemented"))
+;;! Generates a random prim in a range
+(define* (random-prime start end (show-trace #f))
+  (if show-trace
+      (begin
+        (display ".")
+        (force-output)))
+  (let* ((product-of-primes
+          (lambda (n)
+            (let loop ((n (- n 1)) (p 2) (i 3))
+              (cond ((= n 0)
+                     p)
+                    ((= 1 (gcd i p))
+                     (loop (- n 1) (* p i) (+ i 2)))
+                    (else
+                     (loop n p (+ i 2)))))))
+         (prod-small-primes (product-of-primes 300)))
+    (define (likely-prime? n)
+      (and (= 1 (gcd n prod-small-primes))
+           (= 1 (expt-mod 2 (- n 1) n))))
+    (let loop ((i 1))
+      (if show-trace
+          (begin
+            (if (= 0 (modulo i 10)) (newline))
+            (display "+")
+            (force-output)))
+      (let* ((x (+ start (random-integer (- end start))))
+             (n (if (odd? x) x (+ x 1))))
+        (if (or (>= n end)
+                (not (likely-prime? n)))
+            (loop (+ i 1))
+            (begin
+              (if show-trace (newline))
+              n))))))

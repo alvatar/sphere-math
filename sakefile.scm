@@ -1,6 +1,6 @@
 (define modules
-  '(basic
-    bit-logical
+  '(arithmetics
+    bit-logic
     matrix))
 
 (define-task compile ()
