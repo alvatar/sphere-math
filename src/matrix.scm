@@ -187,5 +187,14 @@
            0
            1)))))
 
-
+(define (matrix:transpose m)
+  (let* ((rows (matrix-rows m))
+         (cols (matrix-columns m))
+         (m2 (make-matrix cols rows)))
+    (let loop ((r 0))
+      (let loop2 ((c 0))
+        (matrix-set! m2 r c (matrix-ref m c r))
+        (if (< c (- cols 1)) (loop2 (+ c 1))))
+      (if (< r (- rows 1)) (loop (+ r 1))))
+    m2))
 
