@@ -44,7 +44,7 @@
        ((##bignum? n) n)           ; Bignums are integer by definition
        ((##flonum? n) (if (##fl< n fixnum-max-as-flonum)
                           (##flonum->fixnum n)
-                          (##flonum.->exact-int n)))
+                          (##flonum->exact-int n)))
        ((##ratnum? n) (##inexact->exact (##floor n)))
        ((##complex? n) (error "complex->integer number conversion not supported"))
        (else (error "Generic ->integer conversion only implemented for numbers"))))))
